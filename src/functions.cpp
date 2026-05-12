@@ -4,22 +4,37 @@
 #include <stdint.h>
 
 
-// A
 /** Eleva a a la b recortando con mod */
 uint64_t potenciaMod(uint64_t a, uint64_t b, uint64_t mod){
     uint64_t res = 1;
-
+    a %= mod;
+    while(b){
+        if(b&1) res = (res*a)%mod;
+        a = (a*a)%mod, b >>= 1;
+    }
+    return res;
 }
 
 /**Encuentra la combinación lineal de a y b que resulta en 1. */
 int64_t mcde(uint64_t a, uint64_t b, int64_t &x, int64_t &y){
-
+    if(b==0){
+        x = 1, y = 0;
+        return a;
+    }
+    int64_t x1, y1;
+    int64_t d = mcde(b, a%b, x1, y1);
+    x = y1,
+    y = x1 - y1 * (a/b);
+    return d;
 }
 
 /** Encuentra el inverso multiplicativo módulo M. Es mejor obtenerlo
     con el algoritmo de euclides extendido */
 uint64_t invMult(uint64_t a, uint64_t mod){
-
+    int64_t x, y;
+    int64_t d = mcde(a, mod, x, y);
+    if(d != 1) return 0; // no existe xd
+    return (x%mod + mod) % mod;
 }
 
 // B
