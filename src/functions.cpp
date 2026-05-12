@@ -26,22 +26,38 @@ uint64_t invMult(uint64_t a, uint64_t mod){
 
 /** Encuentra el máximo común divisor entre a y b. */
 int64_t mcd(uint64_t a, uint64_t b){
-
+    // alg de euclides 
+    return b ? mcd(b, a%b) : a;
 }
 
 /** Nos dice si un número es primo o no */
 bool esPrimo(uint64_t n){
-
+    for (int d = 2; d * d <= n; d++) {
+        if (n % d == 0)
+            return false;
+    }
+    return n >= 2;
 }
 
 
 /** Nos dice si 2 números son coprimos o primos relativos */
 bool coprimos(uint64_t a, uint64_t b){
-
+    return mcd(a,b) == 1;
 }
 
 /** Nos regresa la función phi de euler de un número n */
 uint64_t phiEuler(uint64_t n){
+    uint64_t res = n;
+    for (uint64_t p = 2; p * p <= n; p++) {
+        if (n % p == 0) {
+            while (n % p == 0)
+                n /= p;
+            res -= res / p;
+        }
+    }
+    if (n > 1)
+        res -= res / n;
+    return res;
 
 }
 
