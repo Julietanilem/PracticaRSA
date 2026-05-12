@@ -33,7 +33,7 @@ int64_t mcde(uint64_t a, uint64_t b, int64_t &x, int64_t &y){
 uint64_t invMult(uint64_t a, uint64_t mod){
     int64_t x, y;
     int64_t d = mcde(a, mod, x, y);
-    // if(d != 1) return -1;
+    if(d != 1) return 0; // no existe xd
     return (x%mod + mod) % mod;
 }
 
