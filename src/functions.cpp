@@ -37,7 +37,6 @@ uint64_t invMult(uint64_t a, uint64_t mod){
     return (x%mod + mod) % mod;
 }
 
-// B
 
 /** Encuentra el máximo común divisor entre a y b. */
 int64_t mcd(uint64_t a, uint64_t b){
@@ -47,7 +46,7 @@ int64_t mcd(uint64_t a, uint64_t b){
 
 /** Nos dice si un número es primo o no */
 bool esPrimo(uint64_t n){
-    for (int d = 2; d * d <= n; d++) {
+    for (uint64_t d = 2; d * d <= n; d++) {
         if (n % d == 0)
             return false;
     }
