@@ -3,6 +3,8 @@
 #include <random>
 #include <stdint.h>
 
+
+// A
 /** Eleva a a la b recortando con mod */
 uint64_t potenciaMod(uint64_t a, uint64_t b, uint64_t mod){
     uint64_t res = 1;
@@ -20,6 +22,8 @@ uint64_t invMult(uint64_t a, uint64_t mod){
 
 }
 
+// B
+
 /** Encuentra el máximo común divisor entre a y b. */
 int64_t mcd(uint64_t a, uint64_t b){
 
@@ -29,6 +33,7 @@ int64_t mcd(uint64_t a, uint64_t b){
 bool esPrimo(uint64_t n){
 
 }
+
 
 /** Nos dice si 2 números son coprimos o primos relativos */
 bool coprimos(uint64_t a, uint64_t b){

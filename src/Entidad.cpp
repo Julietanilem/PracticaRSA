@@ -8,6 +8,7 @@ uint64_t potenciaMod(uint64_t a, uint64_t b, uint64_t mod);
 uint rand(uint a, uint b);
 bool esPrimo(uint64_t a);
 
+///// A
 /** Construye una entidad usando dos números primos p y q */
 Entidad::Entidad(std::string nombre, uint64_t p, uint64_t q)
     :nombre{nombre} {
@@ -29,6 +30,7 @@ void Entidad::agregaLlave(std::string nombre, std::tuple<uint64_t, uint64_t> lla
 uint64_t Entidad::cifraCaracter(std::string nombre, unsigned char c){
     
 }
+//// B
 
 /** Descifra un caracter que fue cifrado utilizando su llave pública */
 unsigned char Entidad::descifraCaracter(uint64_t i){
