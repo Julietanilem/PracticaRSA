@@ -75,34 +75,62 @@ uint64_t Entidad::cifraCaracter(std::string nombre, unsigned char c){
 
 /** Descifra un caracter que fue cifrado utilizando su llave pública */
 unsigned char Entidad::descifraCaracter(uint64_t i){
-    uint64_t d = std::get<0>(priv);
-    uint64_t n = std::get<1>(priv);
-    return (unsigned char)potenciaMod(i, d, n);
+  
+  // Primero obtenemos la llave privadisima
+  uint64_t x = std::get<0>(priv);
+  uint64_t n = std::get<1>(priv);
+  
+  // m = C^x mod n
+  uint64_t m = potenciaMod(i, x, n);
+  
+  // Pasamos el número a su caracter correspondiente
+  return static_cast<unsigned char>(m);
+  
 }
 
 /** Cifra una cadena de caracteres */
 std::vector<uint64_t> Entidad::cifraMensaje(std::string nombre, std::string mensaje){
-    std::vector<uint64_t> cifrado;
-    for (size_t i = 0; i < mensaje.size(); i++) {
-        cifrado.push_back(cifraCaracter(nombre, (unsigned char)mensaje[i]));
-    }
-    return cifrado;
+  
+  std::vector<uint64_t> mensajeCifrado;
+    
+  // Recorremos cada caracter
+  for (unsigned char c : mensaje) {
+    // Ciframos con la parte A
+    mensajeCifrado.push_back(cifraCaracter(nombre, c));
+  }
+    
+  return mensajeCifrado;
+  
 }
 
 /** Descifra un vector de números cifrados para esta entidad */
 std::vector<uint64_t> Entidad::descifraMensaje(std::vector<uint64_t> cifrado){
-    std::vector<uint64_t> descifrado;
-    for (size_t i = 0; i < cifrado.size(); i++) {
-        descifrado.push_back((uint64_t)descifraCaracter(cifrado[i]));
-    }
-    return descifrado;
+
+  std::vector<uint64_t> mensajeDescifrado;
+    
+  // La llave
+  uint64_t x = std::get<0>(priv);
+  uint64_t n = std::get<1>(priv);
+
+  // Hacemos la descifración descifraciosa número por número
+  for (uint64_t c : cifrado) {
+    mensajeDescifrado.push_back(potenciaMod(c, x, n));
+  }
+    
+  return mensajeDescifrado;
+    
 }
 
 /** Convierte un vector de números descifrados a una cadena */
 std::string Entidad::decodificarMensaje(std::vector<uint64_t> descifrado){
-    std::string mensaje;
-    for (size_t i = 0; i < descifrado.size(); i++) {
-        mensaje += (char)descifrado[i];
-    }
-    return mensaje;
+
+  std::string textoOriginal;
+    
+  for (uint64_t num : descifrado) {
+    // Convertimos de número a su caracter
+    textoOriginal.push_back(static_cast<char>(num));
+  }
+    
+  return textoOriginal;
+    
 }
