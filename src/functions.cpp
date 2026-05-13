@@ -31,11 +31,38 @@ int64_t mcde(uint64_t a, uint64_t b, int64_t &x, int64_t &y){
 /** Encuentra el inverso multiplicativo módulo M. Es mejor obtenerlo
     con el algoritmo de euclides extendido */
 uint64_t invMult(uint64_t a, uint64_t mod){
-    int64_t x, y;
-    int64_t d = mcde(a, mod, x, y);
-    if(d != 1) return 0;
-    int64_t m = (int64_t)mod;
-    return ((x % m) + m) % m;
+  // Esto trono a la mera hora. Hay desbordamiento.
+  // Le moveré en fa. Voy a usar int128 y hacerlo iterativo mejor.
+
+  // La respuesta final, y la construcción de la misma.
+  __int128_t res = 0, construccion = 1;
+  // Nuestro modulo y la llave publica.
+  __int128_t modulo = mod, llaveP = a;
+    
+  while (llaveP != 0) {
+    // Calculamos el cociente
+    __int128_t cociente = modulo / llaveP;
+    // Guardamos resultado viejo
+    __int128_t tempRes = res;
+    // Trabajo actual
+    res = construccion;
+    // Lo que falta por hacer
+    construccion = tempRes - cociente * construccion;
+
+    // MCD
+    __int128_t tempModulo = modulo;
+    modulo = llaveP;
+    llaveP = tempModulo - cociente * llaveP;
+  }
+
+  // Manejo de errores matematicos
+  if (modulo > 1)
+    return 0;
+  
+  if (res < 0)
+    res = res + mod;
+    
+  return (uint64_t)res;
 }
 
 
