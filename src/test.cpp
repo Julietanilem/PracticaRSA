@@ -171,7 +171,7 @@ bool testByte(){
     return true;
 }
 
-int main(){
+int mainTest(){
     /* siempre he pensado que es un patito <3 */
     int n = 1<<8;
     std::cout << "Pruebas \n";
