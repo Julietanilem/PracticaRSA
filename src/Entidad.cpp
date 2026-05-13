@@ -22,8 +22,9 @@ Entidad::Entidad(std::string nombre, uint64_t p, uint64_t q)
     uint64_t phi = (p - 1) * (q - 1);
 
     uint64_t e_publico;
+    uint limit = (phi - 1 > 65535) ? 65535 : (uint)(phi - 1);
     do {
-        e_publico = rand(2, phi - 1);
+        e_publico = rand(2, limit);
     } while (mcd(e_publico, phi) != 1);
 
     uint64_t d_privado = invMult(e_publico, phi);
@@ -74,20 +75,34 @@ uint64_t Entidad::cifraCaracter(std::string nombre, unsigned char c){
 
 /** Descifra un caracter que fue cifrado utilizando su llave pública */
 unsigned char Entidad::descifraCaracter(uint64_t i){
-   
+    uint64_t d = std::get<0>(priv);
+    uint64_t n = std::get<1>(priv);
+    return (unsigned char)potenciaMod(i, d, n);
 }
 
 /** Cifra una cadena de caracteres */
 std::vector<uint64_t> Entidad::cifraMensaje(std::string nombre, std::string mensaje){
-    
+    std::vector<uint64_t> cifrado;
+    for (size_t i = 0; i < mensaje.size(); i++) {
+        cifrado.push_back(cifraCaracter(nombre, (unsigned char)mensaje[i]));
+    }
+    return cifrado;
 }
 
 /** Descifra un vector de números cifrados para esta entidad */
 std::vector<uint64_t> Entidad::descifraMensaje(std::vector<uint64_t> cifrado){
-    
-};
+    std::vector<uint64_t> descifrado;
+    for (size_t i = 0; i < cifrado.size(); i++) {
+        descifrado.push_back((uint64_t)descifraCaracter(cifrado[i]));
+    }
+    return descifrado;
+}
 
 /** Convierte un vector de números descifrados a una cadena */
 std::string Entidad::decodificarMensaje(std::vector<uint64_t> descifrado){
-    
-};
+    std::string mensaje;
+    for (size_t i = 0; i < descifrado.size(); i++) {
+        mensaje += (char)descifrado[i];
+    }
+    return mensaje;
+}

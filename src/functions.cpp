@@ -9,8 +9,8 @@ uint64_t potenciaMod(uint64_t a, uint64_t b, uint64_t mod){
     uint64_t res = 1;
     a %= mod;
     while(b){
-        if(b&1) res = (res*a)%mod;
-        a = (a*a)%mod, b >>= 1;
+        if(b&1) res = ((__uint128_t)res*a)%mod;
+        a = ((__uint128_t)a*a)%mod, b >>= 1;
     }
     return res;
 }
@@ -33,8 +33,9 @@ int64_t mcde(uint64_t a, uint64_t b, int64_t &x, int64_t &y){
 uint64_t invMult(uint64_t a, uint64_t mod){
     int64_t x, y;
     int64_t d = mcde(a, mod, x, y);
-    if(d != 1) return 0; // no existe xd
-    return (x%mod + mod) % mod;
+    if(d != 1) return 0;
+    int64_t m = (int64_t)mod;
+    return ((x % m) + m) % m;
 }
 
 
